@@ -1,1 +1,6 @@
-
+env3.11/
+.env
+files/
+.cache/
+.streamlit
+.DS_Store
