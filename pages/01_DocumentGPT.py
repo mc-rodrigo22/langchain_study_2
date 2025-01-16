@@ -10,6 +10,10 @@ from langchain.callbacks.base import BaseCallbackHandler
 import streamlit as st
 from langchain.memory import ConversationSummaryBufferMemory
 
+openai_api_key = st.secrets["openai"]["api_key"]
+if not openai_api_key:
+    raise ValueError("OpenAI API key not found!")
+
 st.set_page_config(
     page_title="DocumentGPT",
     page_icon="📃",
