@@ -19,6 +19,7 @@ st.set_page_config(
     page_icon="📃",
 )
 
+
 class ChatCallbackHandler(BaseCallbackHandler):
     message = ""
 
