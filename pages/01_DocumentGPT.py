@@ -37,11 +37,11 @@ class ChatCallbackHandler(BaseCallbackHandler):
 llm = ChatOpenAI(
     temperature=0.1,
     streaming=True,
+    openai_api_key=st.secrets["openai"]["api_key"], 
     callbacks=[
         ChatCallbackHandler(),
     ],
 )
-
 
 @st.cache_data(show_spinner="Embedding your file...")
 def embed_file(file):
