@@ -8,7 +8,7 @@ from langchain.vectorstores.faiss import FAISS
 from langchain.chat_models import ChatOpenAI
 from langchain.callbacks.base import BaseCallbackHandler
 import streamlit as st
-from langchapip install -U langchain-communityin.memory import ConversationSummaryBufferMemory
+from langchain.memory import ConversationSummaryBufferMemory
 
 st.set_page_config(
     page_title="DocumentGPT",
@@ -125,7 +125,7 @@ with st.sidebar:
     )
 
     st.markdown(
-        "[View this project on GitHub](https://github.com/mc-rodrigo22/langchain_study/blob/main/pages/01_DocumentGPT.py)"
+        "[View this project on GitHub](https://github.com/mc-rodrigo22/langchain_study_2/blob/main/pages/01_DocumentGPT.py)"
     )
 
 if file:
