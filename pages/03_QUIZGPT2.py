@@ -6,12 +6,9 @@ from langchain.prompts import PromptTemplate
 from langchain.callbacks import StreamingStdOutCallbackHandler
 import streamlit as st
 from langchain.retrievers import WikipediaRetriever
-from langchain.schema import BaseOutputParser, output_parser
+from langchain.schema import BaseOutputParser
 import random
-
-openai_api_key = st.secrets["openai"]["api_key"]
-if not openai_api_key:
-    raise ValueError("OpenAI API key not found!")
+import time
 
 class JsonOutputParser(BaseOutputParser):
     def parse(self, text):
@@ -26,6 +23,19 @@ st.set_page_config(
 )
 
 st.title("QUIZGPT")
+
+with st.sidebar:
+    st.header("Settings")
+
+    openai_api_key = st.text_input("Enter your OpenAI API Key", type="password")
+    if not openai_api_key:
+        st.warning("Please enter your OpenAI API Key to continue.")
+    
+    difficulty = st.selectbox("Select Difficulty Level", ["Easy", "Medium", "Hard"])
+
+    st.markdown(
+        "[View on GitHub](https://github.com/mc-rodrigo22/langchain_study_2/blob/main/pages/02_QUIZGPT.py)", unsafe_allow_html=True
+    )
 
 function = {
     "name": "get_questions",
@@ -57,7 +67,7 @@ function = {
                             },
                         },
                     },
-                    "required": ["question", "answer"],
+                    "required": ["question", "answers"],
                 },
             },
         },
@@ -66,10 +76,11 @@ function = {
 }
 
 llm = ChatOpenAI(
-    temperature=0.1,
+    temperature=0.3 if difficulty == "Easy" else 0.7 if difficulty == "Medium" else 1.0,
     model="gpt-3.5-turbo-1106",
     streaming=True,
     callbacks=[StreamingStdOutCallbackHandler()],
+    api_key=openai_api_key,
 ).bind(
     function_call={
         "name": "get_questions",
@@ -117,7 +128,6 @@ def run_quiz_chain(_docs, topic):
         random.shuffle(arguments["questions"][index]["answers"])
     return arguments
 
-
 @st.cache_data(show_spinner="Searching Wikipedia...")
 def wiki_search(term):
     retriever = WikipediaRetriever(top_k_results=5)
@@ -145,8 +155,7 @@ with st.sidebar:
         topic = st.text_input("Search Wikipedia...")
         if topic:
             docs = wiki_search(topic)
-    show_answer = st.toggle("Display the correct answer when the user selects an incorrect option", False)
-
+    show_answer = st.checkbox("Display the correct answer when the user selects an incorrect option", False)
 
 if not docs:
     st.markdown(
@@ -160,7 +169,11 @@ if not docs:
     )
 else:
     response = run_quiz_chain(docs, topic if topic else file.name)
-    with st.form("questions_form"):
+    form_key = f"questions_form_{int(time.time() * 1000)}"
+
+    with st.form(form_key):  
+        correct_count = 0
+
         for idx, question in enumerate(response["questions"]):
             value = st.radio(
                 f"{idx+1}: {question['question']}",
@@ -169,13 +182,13 @@ else:
                     for index, answer in enumerate(question["answers"])
                 ],
                 index=None,
+                key=f"question_{idx}",
             )
             isCorrect = False
             if value:
-                isCorrect = {"answer": value[3:], "correct": True} in question[
-                    "answers"
-                ]
+                isCorrect = {"answer": value[3:], "correct": True} in question["answers"]
             if isCorrect:
+                correct_count += 1
                 st.success("✅ Correct!")
             elif value:
                 if show_answer:
@@ -187,4 +200,17 @@ else:
                 else:
                     st.error("❌ It's wrong.")
             st.divider()
-        button = st.form_submit_button()
+
+        button = st.form_submit_button("Submit")
+        if button:
+            if correct_count < len(response["questions"]):
+                st.warning(f"Your score: {correct_count}/{len(response['questions'])}. Try again!")
+                st.experimental_rerun()
+            else:
+                st.balloons()
+                st.success("Perfect Score! Well done!")
+
+
+
+                
+#250109 코드 에러 아예 없게 & 전체 테스트 해보기 & 깃헙 링크 사이드바 맨 아래로 & 전체 코드 이해하기
