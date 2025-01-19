@@ -107,20 +107,20 @@ def format_docs(docs):
 @st.cache_data(show_spinner="Loading file...")
 def split_file(file):
     try:
-        # 파일 내용을 읽기
+        # Read the file content
         file_content = file.read()
         file_path = f"./.cache/quiz_files/{file.name}"
         with open(file_path, "wb") as f:
             f.write(file_content)
 
-        # 파일 로딩 및 텍스트 분할
+        # Load the file and split the text
         loader = UnstructuredFileLoader(file_path)
         docs = loader.load()
         if not docs:
             st.error("The file could not be processed. Please check the file format.")
             return None
 
-        # 텍스트 분할
+        # Text splitting
         splitter = CharacterTextSplitter.from_tiktoken_encoder(
             separator="\n",
             chunk_size=600,
