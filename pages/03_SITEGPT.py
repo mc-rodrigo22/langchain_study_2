@@ -1,4 +1,5 @@
 from langchain.document_loaders import SitemapLoader
+from aiohttp import ClientTimeout
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings import OpenAIEmbeddings
@@ -123,7 +124,11 @@ def preprocess_cloudflare_sitemap(output_file="cloudflare_sitemap.pkl", batch_si
         chunk_size=500,
         chunk_overlap=100
     )
-    loader = SitemapLoader(url)
+
+    # 타임아웃 설정 (60초로 늘리기)
+    timeout = ClientTimeout(total=60)  # 60초로 타임아웃 설정
+    loader = SitemapLoader(url, timeout=timeout)  # 타임아웃을 SitemapLoader에 반영
+
     loader.requests_per_second = 2
 
     docs = []
