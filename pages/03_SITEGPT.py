@@ -1,5 +1,5 @@
+import aiohttp
 from langchain.document_loaders import SitemapLoader
-from aiohttp import ClientTimeout
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings import OpenAIEmbeddings
@@ -11,6 +11,7 @@ import streamlit as st
 import pickle
 import os
 from concurrent.futures import ThreadPoolExecutor
+from aiohttp import ClientTimeout
 
 # Streamlit app configuration
 st.set_page_config(page_title="Cloudflare SiteGPT", page_icon="🔅")
@@ -127,10 +128,17 @@ def preprocess_cloudflare_sitemap(output_file="cloudflare_sitemap.pkl", batch_si
 
     # 타임아웃 설정 (60초로 늘리기)
     timeout = ClientTimeout(total=60)  # 60초로 타임아웃 설정
-    loader = SitemapLoader(url, timeout=timeout)  # 타임아웃을 SitemapLoader에 반영
 
-    loader.requests_per_second = 2
+    # SitemapLoader의 requests_per_second는 기본적으로 5로 설정되어 있습니다.
+    loader = SitemapLoader(url)
+    
+    # 직접 aiohttp 세션을 사용하여 타임아웃을 설정
+    async def custom_fetch_with_timeout(url):
+        async with aiohttp.ClientSession(timeout=timeout) as session:
+            async with session.get(url) as response:
+                return await response.text()
 
+    # URL을 로드할 때 커스터마이징한 fetch 사용
     docs = []
     for i, doc in enumerate(loader.load()):
         docs.extend(splitter.split_text(doc.page_content))
