@@ -1,18 +1,28 @@
-Wikipedia Results:
-Page: XZ Utils backdoor
-Summary: In February 2024, a malicious backdoor was introduced to the Linux build of the xz utility within the liblzma library in versions 5.6.0 and 5.6.1 by an account using the name "Jia Tan". The backdoor gives an attacker who possesses a specific Ed448 private key remote code execution capabilities on the affected Linux system. The issue has been given the Common Vulnerabilities and Exposures number CVE-2024-3094 and has been assigned a CVSS score of 10.0, the highest possible score.
-While xz is commonly present in most Linux distributions, at the time of discovery the backdoored version had not yet been widely deployed to production systems, but was present in development versions of major distributions. The backdoor was discovered by the software developer Andres Freund, who announced his findings on 29 March 2024.
+### XZ Backdoor Overview
 
-Page: Supply chain attack
-Summary: A supply chain attack is a cyber-attack that seeks to damage an organization by targeting less secure elements in the supply chain. A supply chain attack can occur in any industry, from the financial sector, oil industry, to a government sector. A supply chain attack can happen in software or hardware. Cybercriminals typically tamper with the manufacturing or distribution of a product by installing malware or hardware-based spying components. Symantec's 2019 Internet Security Threat Report states that supply chain attacks increased by 78 percent in 2018.
-A supply chain is a system of activities involved in handling, distributing, manufacturing, and processing goods in order to move resources from a vendor into the hands of the final consumer. A supply chain is a complex network of interconnected players governed by supply and demand.
-Although supply chain attack is a broad term without a universally agreed upon definition, in reference to cyber-security, a supply chain attack can involve physically tampering with electronics (computers, ATMs, power systems, factory data networks) in order to install undetectable malware for the purpose of bringing harm to a player further down the supply chain network. Alternatively, the term can be used to describe attacks exploiting the software supply chain, in which an apparently low-level or unimportant software component used by other software can be used to inject malicious code into the larger software that depends on the component.
-In a more general sense, a supply chain attack may not necessarily involve electronics. In 2010 when burglars gained access to the pharmaceutical giant Eli Lilly's supply warehouse, by drilling a hole in the roof and loading $80 million worth of prescription drugs into a truck, they could also have been said to carry out a supply chain attack. However, this article will discuss cyber attacks on physical supply networks that rely on technology; hence, a supply chain attack is a method used by cyber-criminals.
+In February 2024, a malicious backdoor was introduced to the Linux build of the xz utility within the liblzma library in versions 5.6.0 and 5.6.1 by an account using the name "Jia Tan". The backdoor gives an attacker who possesses a specific Ed448 private key remote code execution capabilities on the affected Linux system. The issue has been given the Common Vulnerabilities and Exposures number CVE-2024-3094 and has been assigned a CVSS score of 10.0, the highest possible score.
 
-Page: Timeline of computer viruses and worms
-Summary: This timeline of computer viruses and worms presents a chronological timeline of noteworthy computer viruses, computer worms, Trojan horses, similar malware, related research and events.
+### Discovery and Impact
 
-DuckDuckGo Search Results:
-Recently, a backdoor was discovered in XZ, a popular library for lossless data compression. Initial research efforts were predominantly concentrated on unpacking the well-disguised attack vector, while the social aspects of the attack received only murmurings. To investigate this attack, I never read a line of code. What does the backdoor do? Malicious code added to xz Utils versions 5.6.0 and 5.6.1 modified the way the software functions. The backdoor manipulated sshd, the executable file used to make remote ... 2024-02-24: Jia Tan tags and builds v5.6.0 and publishes an xz-5.6..tar.gz distribution with an extra, malicious build-to-host.m4 that adds the backdoor when building a deb/rpm package. This m4 file is not present in the source repository, but many other legitimate ones are added during package as well, so it's not suspicious by itself. Threat actors added malicious code (or a backdoor) to the XZ utility versions 5.6.0 and 5.6.1. The installed backdoor works by manipulating the sshd, a server process that facilitates secure internet connections using the SSH protocol. The sshd is responsible for user authentication, encryption, terminal connections, file transfers, and tunneling. Adding the following string to /etc/environment will disable the malicious backdoor functionality (applies after restarting SSH and Systemd) - yolAbejyiejuvnup=Evjtgvsh5okmkAvj JFrog OSS tools for detection of CVE-2024-3094. The JFrog Research team published an open-source detector for CVE-2024-3094.
+The backdoor was discovered by software developer Andres Freund, who announced his findings on March 29, 2024. Although xz is commonly present in most Linux distributions, at the time of discovery, the backdoored version had not yet been widely deployed to production systems but was present in development versions of major distributions, including Fedora Rawhide and Debian testing.
 
-<coroutine object Page.evaluate at 0x745891452b40>
+### Technical Details
+
+The malicious code was introduced in updates that modified the way the xz utility functions, specifically targeting the SSH daemon (sshd). This backdoor allowed anyone with a predetermined encryption key to stash any code of their choice in an SSH login certificate, which could then be executed on the compromised device. The backdoor was designed to manipulate SSH authentication, potentially allowing unauthorized access to systems.
+
+### Supply Chain Attack
+
+This incident is considered a significant supply chain attack, as it involved the insertion of malicious code into a widely used open-source project. The attack was characterized by its sophistication, as it involved social engineering and manipulation of the development process to introduce the backdoor without immediate detection.
+
+### Response and Mitigation
+
+Following the discovery, various Linux distributions, including Red Hat and Debian, took steps to mitigate the risk by rolling back to earlier, unaffected versions of xz Utils. Users of affected systems were advised to check for the presence of the backdoored versions and take appropriate action.
+
+### Conclusion
+
+The XZ backdoor incident highlights the vulnerabilities inherent in open-source software development and the potential for malicious actors to exploit these systems. It serves as a reminder of the importance of vigilance in software supply chains and the need for robust security practices.
+
+### Sources
+- [WIRED: The XZ Backdoor: Everything You Need to Know](https://www.wired.com/story/xz-backdoor-everything-you-need-to-know/)
+- [Ars Technica: Backdoor found in widely used Linux utility targets encrypted SSH connections](https://arstechnica.com/security/2024/03/backdoor-found-in-widely-used-linux-utility-breaks-encrypted-ssh-connections/)
+- [Wikipedia: XZ Utils backdoor](https://en.wikipedia.org/wiki/XZ_Utils_backdoor)
