@@ -93,7 +93,7 @@ st.set_page_config(page_title="OpenAI Assistant", layout="wide")
 # Sidebar setup for API key input and GitHub link.
 st.sidebar.title("Settings")
 api_key = st.sidebar.text_input("Enter your OpenAI API key:", type="password")
-st.sidebar.markdown("[GitHub Repository](https://github.com/your-repo-link)")
+st.sidebar.markdown("[GitHub Repository](https://github.com/mc-rodrigo22/langchain_study_2/blob/main/pages/04_Research_Assistant.py)")
 
 # Ensure API key is provided.
 if not api_key:

@@ -1,28 +1,13 @@
-### XZ Backdoor Overview
+Ruben Filipe Marques Amorim (born 27 January 1985) is a Portuguese professional football manager and former player who is the current head coach of Premier League club Manchester United.
 
-In February 2024, a malicious backdoor was introduced to the Linux build of the xz utility within the liblzma library in versions 5.6.0 and 5.6.1 by an account using the name "Jia Tan". The backdoor gives an attacker who possesses a specific Ed448 private key remote code execution capabilities on the affected Linux system. The issue has been given the Common Vulnerabilities and Exposures number CVE-2024-3094 and has been assigned a CVSS score of 10.0, the highest possible score.
+As a footballer, Amorim played as a midfielder. He spent most of his professional career with Belenenses and Benfica, signing with the latter in 2008 and going on to win ten major titles, including three league titles, one Taça de Portugal, five Taças da Liga and one Supertaça Cândido de Oliveira. He represented Portugal in two FIFA World Cups, earning a total of 14 caps.
 
-### Discovery and Impact
+After retiring as a player in 2017, Amorim began his coaching career at Casa Pia in 2018, before resigning that same year amid a dispute with the Portuguese Football Federation (FPF). He was then appointed head coach at Braga's reserve team, popularly known as Braga B, before taking charge of the Braga senior side in December 2019, winning the 2020 Taça da Liga.
 
-The backdoor was discovered by software developer Andres Freund, who announced his findings on March 29, 2024. Although xz is commonly present in most Linux distributions, at the time of discovery, the backdoored version had not yet been widely deployed to production systems but was present in development versions of major distributions, including Fedora Rawhide and Debian testing.
+In March 2020, Amorim was appointed manager of Sporting CP, becoming then the third most expensive manager ever. In his first season, Amorim guided the club to a double by winning both the Taça da Liga and the Primeira Liga, ending the latter's 19-year league title drought. These achievements won him the Primeira Liga's Manager of the Year award for the 2020–21 season. He later led them to another Primeira Liga title in the 2023–24 season, being named for the second time Primeira Liga's Manager of the Year. He left the club for Manchester United in late 2024.
 
-### Technical Details
-
-The malicious code was introduced in updates that modified the way the xz utility functions, specifically targeting the SSH daemon (sshd). This backdoor allowed anyone with a predetermined encryption key to stash any code of their choice in an SSH login certificate, which could then be executed on the compromised device. The backdoor was designed to manipulate SSH authentication, potentially allowing unauthorized access to systems.
-
-### Supply Chain Attack
-
-This incident is considered a significant supply chain attack, as it involved the insertion of malicious code into a widely used open-source project. The attack was characterized by its sophistication, as it involved social engineering and manipulation of the development process to introduce the backdoor without immediate detection.
-
-### Response and Mitigation
-
-Following the discovery, various Linux distributions, including Red Hat and Debian, took steps to mitigate the risk by rolling back to earlier, unaffected versions of xz Utils. Users of affected systems were advised to check for the presence of the backdoored versions and take appropriate action.
-
-### Conclusion
-
-The XZ backdoor incident highlights the vulnerabilities inherent in open-source software development and the potential for malicious actors to exploit these systems. It serves as a reminder of the importance of vigilance in software supply chains and the need for robust security practices.
-
-### Sources
-- [WIRED: The XZ Backdoor: Everything You Need to Know](https://www.wired.com/story/xz-backdoor-everything-you-need-to-know/)
-- [Ars Technica: Backdoor found in widely used Linux utility targets encrypted SSH connections](https://arstechnica.com/security/2024/03/backdoor-found-in-widely-used-linux-utility-breaks-encrypted-ssh-connections/)
-- [Wikipedia: XZ Utils backdoor](https://en.wikipedia.org/wiki/XZ_Utils_backdoor)
+Sources:
+- Wikipedia: https://en.wikipedia.org/wiki/Ruben_Amorim
+- Manchester United Official Website: https://www.manutd.com/en/news/detail/man-utd-appoint-ruben-amorim-as-new-head-coach
+- CNN: https://www.cnn.com/2024/11/01/sport/manchester-united-ruben-amorim-spt/index.html
+- BBC: https://www.bbc.com/sport/football/articles/cd9n25j4p47o
