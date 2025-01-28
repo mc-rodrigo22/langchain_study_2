@@ -193,5 +193,5 @@ if st.button("Run"):
 
 # Add GitHub link to sidebar
 st.sidebar.markdown(
-    "[https://github.com/mc-rodrigo22/langchain_study_2/blob/main/pages/04_OpenAI%20Assistants.py)"
+    "[https://github.com/mc-rodrigo22/langchain_study_2/blob/main/pages/04_OpenAI_Assistants.py)"
 )
