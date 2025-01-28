@@ -2,6 +2,8 @@ import streamlit as st
 import time
 from openai import OpenAI
 
+OpenAI.api_key = st.secrets["OPENAI_API_KEY"]
+
 # Streamlit Sidebar for OpenAI API Key
 st.sidebar.header("API Configuration")
 api_key = st.sidebar.text_input("Enter your OpenAI API Key", type="password")
